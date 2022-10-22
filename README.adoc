@@ -5,9 +5,6 @@
 To work, you need to clone the project
 
 [source,shell]
-----
-git clone --branch deploy-ansible git@git.startext.ru:docker/oracle.git
-----
 
 Also install and configure Ansible  --info from https://confluence.startext.de/pages/viewpage.action?pageId=61047023
 
@@ -43,7 +40,7 @@ $ ./deploy.sh
 ----
 If you have an error with the docker image pull, then you need to run the following command.   
 ----
-docker login registry.startext.dev -u username -p access token gitlab
+docker login registry.gitlab.com -u username -p access token gitlab
 
 ----
 access token can be made in the gitlab profile 

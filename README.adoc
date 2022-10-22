@@ -1,0 +1,85 @@
+= Oracle deploy project  
+
+== Project Pre-setup
+
+To work, you need to clone the project
+
+[source,shell]
+----
+git clone --branch deploy-ansible git@git.startext.ru:docker/oracle.git
+----
+
+Also install and configure Ansible  --info from https://confluence.startext.de/pages/viewpage.action?pageId=61047023
+
+1. Install using the command:
+[source,shell]
+----
+$ sudo apt-get install ansible
+----
+2. Enable authorization on your machine using a public key:
+[source,shell]
+----
+$ sudo vi /etc/ssh/sshd_config
+----
+Find the string #PubkeyAuthentication authentication and remove the comment (remove the # symbol at the very beginning of the line).
+
+3. We are restarting the ssh service:
+[source,shell]
+----
+$ sudo service ssh restart
+----
+4. Add your public key to your well-known hosts:
+[source,shell]
+----
+$ ssh-copy-id -i ~/.ssh/id_ed25519.pub username@127.0.0.1
+----
+
+== Project launch
+
+1. In the project directory, you need to execute the script
+[source,shell]
+----
+$ ./deploy.sh
+----
+If you have an error with the docker image pull, then you need to run the following command.   
+----
+docker login registry.startext.dev -u username -p access token gitlab
+
+----
+access token can be made in the gitlab profile 
+2. After completing the script execution
+You need to go to the directory
+[source,shell]
+----
+$ cd /home/$USER/docker/Oracle_docker
+----
+user_name - the user under which the deployment was performed
+
+3. To run the oracle database in docker, run the command
+[source,shell]
+----
+$ docker-compose up -d && docker-compose logs -f 
+----
+
+wait for the installation completion message
+#########################
+DATABASE IS READY TO USE!
+#########################
+
+== Import a dump
+
+1. In order to import a dump, you need to put a file with the extension *.dmp in a folder
+
+/config/oracle/dump
+
+and give the rights to read files .
+
+2 . Next, you need to execute the script
+[source,shell]
+----
+$ ./import_dump.sh
+----
+
+in the directory
+
+/config/oracle

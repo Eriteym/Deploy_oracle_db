@@ -1,0 +1,5 @@
+---
+local: false
+debug: "{{ lookup('env', 'DEBUG') or true }}"
+docker_image_tag: "{{ lookup('env', 'DOCKER_TAG') or '12.2.0.1-se' }}"
+use_monitoring_app: false

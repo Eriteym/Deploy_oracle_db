@@ -1,0 +1,32 @@
+version: '3.5'
+
+services:
+  oracle:
+    image: {{ docker_image }}
+    container_name: {{ oracle_container_name }}
+    restart: unless-stopped
+    networks:
+      - oracle
+    ports:
+      - {{ oracle_port }}:1521
+    env_file:
+      - .env
+    volumes:
+      - {{ oracle_container_name }}_system_data:/opt/oracle/oradata
+      - {{ oracle_container_name }}_user_data:/opt/oracle/product/12.2.0.1/dbhome_1/dbs
+      - ./config/oracle/setup:/opt/oracle/scripts/setup
+      - ./config/oracle/dump:/opt/oracle/dump
+      - ./config/oracle/dbca.rsp.tmpl:/opt/oracle/dbca.rsp.tmpl
+{% if use_monitoring_app %}
+{% include "docker-compose.monitoring.yaml.inc" %}
+{% endif %}
+networks:
+  oracle:
+
+volumes:
+  {{ oracle_container_name }}_user_data:
+  {{ oracle_container_name }}_system_data:
+{% if use_monitoring_app %}    
+  prometheus_data: {}
+  grafana_data: {}
+{% endif %}

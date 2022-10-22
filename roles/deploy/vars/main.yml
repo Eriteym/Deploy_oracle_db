@@ -1,0 +1,26 @@
+current_user: "{{ lookup('pipe', 'id -n -u') }}"                    # this is LOCAL user
+deploy_user: "{{ lookup('env', 'DEPLOY_USER') or current_user }}"
+project_name: "{{ lookup('env', 'CI_PROJECT_NAME') or 'Oracle_docker' }}"
+application_root: "{{ HOME_FOLDER.stdout }}/docker/{{ project_name }}"     # here we use REMOTE home folder
+
+# docker variables
+docker_image_pull: "{{ 'no' if local else 'yes' }}"
+docker_image: "{{ 'oracle/oracle:12.2.0.1-se' if local else 'docker/oracle:' + docker_image_tag }}"
+docker_image_prometheus: "{{ 'prometheus/prometheus' if local else 'prom/prometheus:v2.32.1' }}"
+docker_image_grafana: "{{ 'grafana/grafana' if local else 'grafana/grafana:8.3.3' }}"
+docker_image_oracle_exporter: "{{ 'oracle_exporter/oracle_exporter' if local else 'iamseth/oracledb_exporter' }}"
+
+# Docker expose ports
+oracle_port: "{{ lookup('env', 'ORACLE_PORT') or '1521' }}"
+prometheus_port: "{{ lookup('env', 'PROMETHEUS_PORT') or '9090' }}"
+grafana_port: "{{ lookup('env', 'GRAFANA_PORT') or '3000' }}"
+oracle_exporter_port: "{{ lookup('env', 'ORACLE_EXPORTER_PORT') or '9161' }}"
+
+# Oracle enviroments
+oracle_sid: "{{ lookup('env', 'ORACLE_SID') or 'ORCL' }}"
+oracle_pdb_sid: "{{ lookup('env', 'ORACLE_PDB_SID') or 'ORCLPDB1' }}"
+oracle_admin_pwd: "{{ lookup('env', 'ORACLE_PWD') or 'goanEg2glef4' }}"
+oracle_container_name: "{{ lookup('env', 'ORACLE_CONTAINER_NAME') or 'oracle_12c-se' }}"
+
+# Oracle memory params
+total_memory: "{{ lookup('env', 'TOTAL_MEMORY') or '4096' }}"

@@ -6,7 +6,6 @@ To work, you need to clone the project
 
 [source,shell]
 
-Also install and configure Ansible  --info from https://confluence.startext.de/pages/viewpage.action?pageId=61047023
 
 1. Install using the command:
 [source,shell]
